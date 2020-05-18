@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+    "name": "table maker",
+    "version": "1.0",
+    "description": "万能数据表格",
+    "browser_action": {
+        "default_popup": "html/popup.html",
+        "default_icon": {
+            "128": "images/fund.png"
+        }
+    },
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+    "icons": {
+        "128": "images/fund.png"
+    },
+    "permissions": [
+        "storage",
+        "<all_urls>"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

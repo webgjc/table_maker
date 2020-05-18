@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/materialize.min.css">
+    <title>easyfund</title>
+    <style type="text/css">
+        body {
+            min-width: 300px;
+            min-height: 300px;
+        }
+        
+        .btn-flat {
+            border: solid 1px #cccccc;
+        }
+        
+        .row {
+            margin-bottom: 0px;
+        }
+        
+        .modal-overlay {
+            top: 0px;
+        }
+
+        #test_parser_result {
+            word-break: break-all;
+        }
+
+        #fields_tbody td {
+            min-width: 100px;
+        }
+
+        .mainbody td {
+            min-width: 100px;
+            white-space: nowrap;
+        }
+
+        .table_head {
+            text-align: center;
+        }
+
+        .main_btn a {
+            width: 48%;
+            margin: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div id="modal" class="modal modal-fixed-footer" style="height:150px">
+            <div class="modal-content">
+                <div class="input-field">
+                    <input type="text" id="keys_input">
+                    <label for="keys_input">主键(多个用,分隔)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-teal btn-flat" id="add_key">确认</a>
+            </div>
+        </div>
+        <div id="modal3" class="modal modal-fixed-footer" style="height:150px">
+            <div class="modal-content">
+                <div class="input-field">
+                    <input type="text" id="new_table_data">
+                    <label for="new_table_data">表格数据</label>
+                </div>
+            </div>
+        </div>
+        <table>
+            <h5 class="table_head"></h5>
+            <thead class="mainhead">
+            </thead>
+
+            <tbody class="mainbody">
+            </tbody>
+        </table>
+        <div class="row main_btn">
+            <div>
+                <a class="waves-effect waves-teal btn-flat" href="#modal">新增主键</a>
+                <a class="waves-effect waves-teal btn-flat" id="edit-table-btn">修改表格</a>
+            </div>
+            <div>
+                <a class="waves-effect waves-teal btn-flat" href="#modal3">导入新表格</a>
+                <a class="waves-effect waves-teal btn-flat" id="export_data" data-clipboard-text="asd">双击导出表格</a>
+            </div>
+        </div>
+    </div>
+    <form class="col s12" style="display: none;" id="set-table">
+        <h5>设置表格</h5>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="table_name" type="text" class="validate">
+                <label for="table_name">表格名</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="datasource_url" type="text" class="validate">
+                <label for="datasource_url">数据来源url({ID}表示主键替换)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="datasource_type">
+                  <option value="" disabled selected>选择返回数据格式</option>
+                  <option value="json" id="select_json">json</option>
+                  <option value="text" id="select_text">text</option>
+                </select>
+                <label>数据格式</label>
+            </div>
+        </div>
+        <div class="row">
+            <a class="waves-effect waves-teal btn-flat" id="submit-table-info">确认并设置列</a>
+            <a class="waves-effect waves-teal btn-flat return-main">返回</a>
+        </div>
+    </form>
+    <form class="col s12" style="display: none;" id="set-field">
+        <h5>设置列</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th data-field="field">列名</th>
+                    <th data-field="parse">解析方式</th>
+                    <th data-field="opera-field">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fields_tbody">
+            </tbody>
+        </table>
+        <div class="row">
+            <a class="waves-effect waves-teal btn-flat" href="#modal1" id="add_field_btn">新增列</a>
+            <a class="waves-effect waves-teal btn-flat" href="#modal2" id="test_parser_btn">测试解析</a>
+            <a class="waves-effect waves-teal btn-flat return-main">返回</a>
+        </div>
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <div class="input-field col s8">
+                    <input id="field_name" type="text" class="validate">
+                    <label for="field_name">列名</label>
+                </div>
+                <div class="input-field col s8">
+                    <input id="parse_format" type="text" class="validate">
+                    <label for="parse_format" id="parse_format_label">解析方式</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="add_field">确认</a>
+            </div>
+        </div>
+        <div id="modal2" class="modal">
+            <div class="modal-content">
+                <div class="input-field col s8">
+                    <input id="test_id" type="text" class="validate">
+                    <label for="test_id">主键</label>
+                </div>
+                <div class="input-field col s8">
+                    <input id="test_parser" type="text" class="validate">
+                    <label for="test_parser" id="test_parser_label">解析方式</label>
+                </div>
+                <div class="col s8" id="test_parser_result">
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" src="../js/jquery.min.js "></script>
+    <script type="text/javascript" src="../js/materialize.min.js "></script>
+    <script type="text/javascript" src="../js/clipboard.min.js"></script>
+    <script type="text/javascript" src="../js/popup.js"></script>
+</body>
+
+</html>
